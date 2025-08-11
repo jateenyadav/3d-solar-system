@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main 3D Container -->
+    <div id="container"></div>
+    
+    <!-- Header with Sun Icon and Title -->
+    <div class="header">
+        <div class="sun-icon"></div>
+        <h1>3D SOLAR</h1>
+    </div>
+
+    <!-- Top Left Categorized Menu -->
+    <div class="top-menu">
+        <button class="menu-toggle" onclick="toggleMenu()">
+            ☰ Solar System Objects
+        </button>
+        <div class="menu-content" id="menuContent">
+            <div class="menu-categories">
+                <!-- Planets Category -->
+                <div class="category-column">
+                    <h4>🪐 Planets</h4>
+                    <div class="category-list" id="planetsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Moons Category -->
+                <div class="category-column">
+                    <h4>🌙 Moons</h4>
+                    <div class="category-list" id="moonsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Spacecraft Category -->
+                <div class="category-column">
+                    <h4>🚀 Spacecraft</h4>
+                    <div class="category-list" id="spacecraftList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Others Category -->
+                <div class="category-column">
+                    <h4>☄️ Others</h4>
+                    <div class="category-list" id="othersList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Left Toolkit -->
+    <div class="toolkit">
+        <button class="toolkit-toggle" onclick="toggleToolkit()">🛠️</button>
+        <div class="toolkit-content" id="toolkitContent">
+            <div class="toolkit-buttons">
+                <button class="toolkit-btn" id="pauseBtn" onclick="togglePause()">⏸️ Pause</button>
+                <button class="toolkit-btn" onclick="showInfo()">ℹ️ Info</button>
+                <button class="toolkit-btn" onclick="zoomIn()">🔍+ Zoom In</button>
+                <button class="toolkit-btn" onclick="zoomOut()">🔍- Zoom Out</button>
+                <button class="toolkit-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+                <button class="toolkit-btn" onclick="toggleChecklist()">📋 Checklist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checklist Panel (Right of Toolkit) -->
+    <div class="checklist-panel" id="checklistPanel">
+        <div class="checklist-header">
+            <h3>Objects Checklist</h3>
+            <button class="close-btn" onclick="toggleChecklist()">×</button>
+        </div>
+        <div class="checklist-content">
+            <div id="checklistItems">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Panel (Right Side) -->
+    <div class="info-panel" id="infoPanel">
+        <button class="close-btn" onclick="hideInfo()">×</button>
+        <div id="infoContent">
+            <h3>Solar System Explorer</h3>
+            <p>Click on any celestial object to learn more about it. Use the controls to navigate around the solar system.</p>
+        </div>
+    </div>
+
+    <!-- Load Main JavaScript Module -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>

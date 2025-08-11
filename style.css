@@ -1,0 +1,382 @@
+/* Reset all default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling for dark space theme */
+body {
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background: #000;
+    color: white;
+}
+
+/* Main 3D scene container */
+#container {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Header with title and sun icon */
+.header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Animated sun icon */
+.sun-icon {
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #FFA500, #FF6347);
+    border-radius: 50%;
+    animation: rotate 10s linear infinite;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.6);
+}
+
+/* Main title styling */
+.header h1 {
+    font-size: 2.5em;
+    background: linear-gradient(45deg, #FFA500, #FF6347, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+}
+
+/* Rotation animation for sun icon */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Top Left Categorized Menu */
+.top-menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Menu toggle button */
+.menu-toggle {
+    padding: 15px;
+    cursor: pointer;
+    font-size: 1.2em;
+    border: none;
+    background: transparent;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Menu content container */
+.menu-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* Expanded menu state */
+.menu-content.expanded {
+    max-height: 500px;
+}
+
+/* Categories layout */
+.menu-categories {
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+    max-width: 600px;
+}
+
+/* Individual category column */
+.category-column {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Category headers */
+.category-column h4 {
+    color: #FFA500;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.3);
+    padding-bottom: 5px;
+}
+
+/* Category item lists - FIXED SCROLLING */
+.category-list {
+    max-height: 200px; /* Set explicit height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scroll */
+    padding-right: 5px; /* Space for scrollbar */
+}
+
+/* Individual menu items */
+.menu-item {
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+    margin: 2px 0;
+    font-size: 0.85em;
+}
+
+/* Menu item hover effect */
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Bottom Left Toolkit */
+.toolkit {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Toolkit toggle button */
+.toolkit-toggle {
+    padding: 15px;
+    cursor: pointer;
+    font-size: 1.2em;
+    border: none;
+    background: transparent;
+    color: white;
+}
+
+/* Toolkit content container */
+.toolkit-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* Expanded toolkit state */
+.toolkit-content.expanded {
+    max-height: 400px; /* Increased for pause button */
+}
+
+/* Toolkit buttons container */
+.toolkit-buttons {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Individual toolkit buttons */
+.toolkit-btn {
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Toolkit button hover effect */
+.toolkit-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Checklist Panel (Right of Toolkit) - FIXED SCROLLING */
+.checklist-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 280px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 250px;
+    max-height: 400px;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Visible checklist panel */
+.checklist-panel.visible {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Checklist header */
+.checklist-header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Checklist header title */
+.checklist-header h3 {
+    font-size: 1.1em;
+    color: #FFA500;
+}
+
+/* Checklist content - FIXED SCROLLING */
+.checklist-content {
+    padding: 15px;
+    max-height: 300px; /* Set explicit height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scroll */
+}
+
+/* Individual checklist items */
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+/* Checklist item hover effect */
+.checklist-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Checklist checkboxes */
+.checklist-item input {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Checklist labels */
+.checklist-item label {
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* Info Panel (Right Side) */
+.info-panel {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 300px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Visible info panel */
+.info-panel.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Info panel headers */
+.info-panel h3 {
+    color: #FFA500;
+    margin-bottom: 10px;
+}
+
+/* Close button for panels */
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+/* Close button hover effect */
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom scrollbar styling - IMPROVED */
+.category-list::-webkit-scrollbar,
+.checklist-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.category-list::-webkit-scrollbar-track,
+.checklist-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.category-list::-webkit-scrollbar-thumb,
+.checklist-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+}
+
+.category-list::-webkit-scrollbar-thumb:hover,
+.checklist-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Object labels in 3D scene */
+.object-label {
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 6px;
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .menu-categories {
+        flex-direction: column;
+        max-width: 200px;
+    }
+    
+    .category-column {
+        min-width: auto;
+    }
+    
+    .checklist-panel {
+        left: 180px;
+        width: 200px;
+    }
+
+    .category-list {
+        max-height: 120px; /* Smaller on mobile */
+    }
+
+    .checklist-content {
+        max-height: 200px; /* Smaller on mobile */
+    }
+}
