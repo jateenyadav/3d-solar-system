@@ -13,15 +13,20 @@ let isPaused = false; // Animation pause state
 let animationId; // Store animation frame ID for cancellation
 let renderLoop; // Separate render loop for paused state
 
-// Realistic orbital data for planets (distances in AU, converted to scene units)
-// Updated texture paths - remove the leading slash and assets folder
+// Enhanced solar system data with more Indian spacecraft and detailed information
 const solarSystemData = {
     sun: {
         name: "Sun",
         radius: 5,
-        description: "The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field.",
-        texture: "textures/sun.jpg", // ← Changed from "/assets/textures/sun.jpg"
-        color: 0xFFA500
+        description: "The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field. Mass: 1.989 × 10³⁰ kg, Temperature: 5,778 K (surface), Age: 4.6 billion years.",
+        texture: "textures/sun.jpg",
+        color: 0xFFA500,
+        facts: [
+            "Contains 99.86% of the Solar System's mass",
+            "Could fit 1.3 million Earths inside it",
+            "Surface temperature: 5,778 K (5,505°C)",
+            "Core temperature: 15 million°C"
+        ]
     },
     planets: [
         {
@@ -30,9 +35,10 @@ const solarSystemData = {
             distance: 15,
             eccentricity: 0.2056,
             speed: 0.02,
-            description: "Mercury is the smallest planet in our solar system and closest to the Sun.",
-            texture: "textures/mercury.jpg", // ← Changed
-            color: 0x8C7853
+            description: "Mercury is the smallest planet in our solar system and closest to the Sun. It has extreme temperature variations, from 427°C during the day to -173°C at night. Orbital period: 88 Earth days.",
+            texture: "textures/mercury.jpg",
+            color: 0x8C7853,
+            facts: ["No atmosphere", "Heavily cratered surface", "One day = 59 Earth days", "No moons"]
         },
         {
             name: "Venus", 
@@ -40,9 +46,10 @@ const solarSystemData = {
             distance: 20, 
             eccentricity: 0.0067,
             speed: 0.015,
-            description: "Venus is the second planet from the Sun and is similar in size to Earth.",
-            texture: "textures/venus.jpg", // ← Changed
-            color: 0xFFC649
+            description: "Venus is the second planet from the Sun and is similar in size to Earth. Known as Earth's twin, it has a thick, toxic atmosphere of carbon dioxide with sulfuric acid clouds. Surface temperature: 462°C.",
+            texture: "textures/venus.jpg",
+            color: 0xFFC649,
+            facts: ["Hottest planet in solar system", "Rotates backwards", "Thick CO₂ atmosphere", "Surface pressure 90x Earth's"]
         },
         {
             name: "Earth", 
@@ -50,9 +57,10 @@ const solarSystemData = {
             distance: 25, 
             eccentricity: 0.0167,
             speed: 0.01,
-            description: "Earth is the third planet from the Sun and the only known planet with life.",
-            texture: "textures/earth.jpg", // ← Changed
-            color: 0x6B93D6
+            description: "Earth is the third planet from the Sun and the only known planet with life. It has liquid water, protective atmosphere, and moderate temperatures. Age: 4.54 billion years, Population: 8+ billion humans.",
+            texture: "textures/earth.jpg",
+            color: 0x6B93D6,
+            facts: ["71% surface covered by water", "Only known planet with life", "1 natural satellite (Moon)", "Protective magnetic field"]
         },
         {
             name: "Mars", 
@@ -60,9 +68,10 @@ const solarSystemData = {
             distance: 30, 
             eccentricity: 0.0934,
             speed: 0.008,
-            description: "Mars is the fourth planet from the Sun and is known as the Red Planet.",
-            texture: "textures/mars.jpg", // ← Changed
-            color: 0xC1440E
+            description: "Mars is the fourth planet from the Sun and is known as the Red Planet due to iron oxide on its surface. It has the largest volcano (Olympus Mons) and canyon (Valles Marineris) in the solar system.",
+            texture: "textures/mars.jpg",
+            color: 0xC1440E,
+            facts: ["2 small moons: Phobos & Deimos", "Day length: 24h 37m", "Polar ice caps", "Evidence of ancient water"]
         },
         {
             name: "Jupiter", 
@@ -70,9 +79,10 @@ const solarSystemData = {
             distance: 40, 
             eccentricity: 0.0489,
             speed: 0.005,
-            description: "Jupiter is the largest planet in our solar system and is a gas giant.",
-            texture: "textures/jupiter.jpg", // ← Changed
-            color: 0xD8CA9D
+            description: "Jupiter is the largest planet in our solar system and is a gas giant. It has a Great Red Spot (giant storm) and over 80 moons including the four Galilean moons. Acts as a cosmic vacuum cleaner.",
+            texture: "textures/jupiter.jpg",
+            color: 0xD8CA9D,
+            facts: ["Great Red Spot storm", "95+ moons", "Mostly hydrogen & helium", "Could fit 1,300 Earths inside"]
         },
         {
             name: "Saturn", 
@@ -80,9 +90,10 @@ const solarSystemData = {
             distance: 50, 
             eccentricity: 0.0565,
             speed: 0.004,
-            description: "Saturn is the sixth planet from the Sun and is famous for its ring system.",
-            texture: "textures/saturn.jpg", // ← Changed
-            color: 0xFAD5A5
+            description: "Saturn is the sixth planet from the Sun and is famous for its prominent ring system made of ice and rock particles. It has 146 confirmed moons, including Titan with thick atmosphere.",
+            texture: "textures/saturn.jpg",
+            color: 0xFAD5A5,
+            facts: ["Prominent ring system", "146+ moons", "Less dense than water", "Hexagonal storm at north pole"]
         },
         {
             name: "Uranus", 
@@ -90,9 +101,10 @@ const solarSystemData = {
             distance: 60, 
             eccentricity: 0.0457,
             speed: 0.003,
-            description: "Uranus is an ice giant and rotates on its side.",
-            texture: "textures/uranus.jpg", // ← Changed
-            color: 0x4FD0E3
+            description: "Uranus is an ice giant that rotates on its side at 98° tilt. It has faint rings and 27 known moons. Discovered by William Herschel in 1781, it's the coldest planetary atmosphere in the solar system.",
+            texture: "textures/uranus.jpg",
+            color: 0x4FD0E3,
+            facts: ["Rotates on its side (98° tilt)", "27 known moons", "Faint ring system", "Coldest atmosphere: -224°C"]
         },
         {
             name: "Neptune", 
@@ -100,9 +112,10 @@ const solarSystemData = {
             distance: 70, 
             eccentricity: 0.0113,
             speed: 0.002,
-            description: "Neptune is the farthest planet from the Sun and is known for its strong winds.",
-            texture: "textures/neptune.jpg", // ← Changed
-            color: 0x4B70DD
+            description: "Neptune is the farthest planet from the Sun and is known for its strong winds reaching up to 2,100 km/h. It has 16 known moons, with Triton being the largest and orbiting backwards.",
+            texture: "textures/neptune.jpg",
+            color: 0x4B70DD,
+            facts: ["Strongest winds: 2,100 km/h", "16 known moons", "Deep blue color from methane", "Takes 165 Earth years to orbit Sun"]
         }
     ],
     moons: [
@@ -113,9 +126,10 @@ const solarSystemData = {
             distance: 3, 
             eccentricity: 0.0549,
             speed: 0.05,
-            description: "The Moon is Earth's only natural satellite.",
-            texture: "textures/moon.jpg", // ← Changed
-            color: 0x888888
+            description: "The Moon is Earth's only natural satellite and the fifth-largest moon in the Solar System. Formed 4.5 billion years ago, it influences Earth's tides and stabilizes our planet's axial tilt.",
+            texture: "textures/moon.jpg",
+            color: 0x888888,
+            facts: ["Influences Earth's tides", "Same side always faces Earth", "Apollo 11 first landing: 1969", "Diameter: 3,474 km"]
         }
     ],
     dwarfPlanets: [
@@ -125,23 +139,78 @@ const solarSystemData = {
             distance: 80, 
             eccentricity: 0.2488,
             speed: 0.001,
-            description: "Pluto is a dwarf planet in the Kuiper belt.",
-            texture: "textures/pluto.jpg", // ← Changed
-            color: 0x8B4513
+            description: "Pluto is a dwarf planet in the Kuiper belt. Discovered in 1930, reclassified as dwarf planet in 2006. It has 5 known moons with Charon being the largest, almost half Pluto's size.",
+            texture: "textures/pluto.jpg",
+            color: 0x8B4513,
+            facts: ["Reclassified as dwarf planet in 2006", "5 known moons", "Made of rock and ice", "New Horizons flyby: 2015"]
         }
     ],
     spacecraft: [
         {
+            name: "Chandrayaan-1", 
+            distance: 30, 
+            speed: 0.003,
+            description: "India's first lunar probe launched by ISRO in 2008. Successfully confirmed water molecules on the Moon's surface. Mission cost: ₹386 crores. Operated for 312 days instead of planned 2 years.",
+            texture: "textures/spaceship.png",
+            color: 0xFF6600,
+            facts: ["Discovered water on Moon", "Launched: October 22, 2008", "11 scientific instruments", "Lost contact in August 2009"]
+        },
+        {
+            name: "Chandrayaan-2", 
+            distance: 32, 
+            speed: 0.0028,
+            description: "India's second lunar exploration mission launched in 2019. Consisted of orbiter, lander (Vikram), and rover (Pragyan). Orbiter continues to study Moon despite lander's hard landing.",
+            texture: "textures/spaceship.png",
+            color: 0xFF4500,
+            facts: ["Launched: July 22, 2019", "Orbiter still operational", "Vikram lander hard landing", "Pragyan rover: 27 kg"]
+        },
+        {
+            name: "Chandrayaan-3", 
+            distance: 28, 
+            speed: 0.0032,
+            description: "India's third lunar mission launched in 2023. Successfully achieved soft landing near Moon's south pole, making India 4th country to land on Moon and 1st near south pole.",
+            texture: "textures/spaceship.png",
+            color: 0xFF8C00,
+            facts: ["Launched: July 14, 2023", "Soft landing: August 23, 2023", "South pole landing", "Cost: ₹615 crores"]
+        },
+        {
+            name: "Mangalyaan (MOM)", 
+            distance: 35, 
+            speed: 0.0025,
+            description: "India's Mars Orbiter Mission launched in 2013. Made India first country to reach Mars orbit in first attempt and first Asian country to reach Mars. Lowest cost Mars mission ever.",
+            texture: "textures/spaceship.png",
+            color: 0xDC143C,
+            facts: ["First Mars mission success", "Cost: ₹450 crores", "Launched: November 5, 2013", "Mission life: 8+ years"]
+        },
+        {
+            name: "Aditya-L1", 
+            distance: 45, 
+            speed: 0.002,
+            description: "India's first solar observation mission launched in 2023. Positioned at Lagrange Point L1 to study Sun's corona, solar wind, and space weather. Seven scientific instruments onboard.",
+            texture: "textures/spaceship.png",
+            color: 0xFFD700,
+            facts: ["First Indian solar mission", "Launched: September 2, 2023", "Lagrange Point L1 orbit", "7 scientific payloads"]
+        },
+        {
             name: "Voyager 1", 
             distance: 90, 
             speed: 0.0005,
-            description: "Voyager 1 is a space probe launched by NASA in 1977.",
-            texture: "textures/spaceship.png", // ← Changed
-            color: 0xffffff
+            description: "NASA's space probe launched in 1977, now in interstellar space. Most distant human-made object from Earth. Carries Golden Record with sounds and images from Earth.",
+            texture: "textures/spaceship.png",
+            color: 0xC0C0C0,
+            facts: ["In interstellar space", "Launched: September 5, 1977", "Carries Golden Record", "24+ billion km from Earth"]
+        },
+        {
+            name: "PSLV-C37", 
+            distance: 55, 
+            speed: 0.0018,
+            description: "ISRO's record-breaking mission that deployed 104 satellites in single launch (February 2017). Included main satellite Cartosat-2D and 103 co-passenger satellites from various countries.",
+            texture: "textures/spaceship.png",
+            color: 0x4169E1,
+            facts: ["104 satellites in one launch", "World record holder", "February 15, 2017", "Multiple country satellites"]
         }
     ]
 };
-
 
 // Initialize the entire 3D scene
 function init() {
@@ -199,6 +268,14 @@ function init() {
     
     // Start continuous render loop for camera controls
     startRenderLoop();
+
+    // Open toolkit by default
+    setTimeout(() => {
+        const toolkitContent = document.getElementById('toolkitContent');
+        if (toolkitContent) {
+            toolkitContent.classList.add('expanded');
+        }
+    }, 1000);
 }
 
 // Helper function to load texture with improved error handling
@@ -446,8 +523,9 @@ function createAsteroids() {
         // Store asteroid data
         asteroid.userData = {
             name: `Asteroid ${i + 1}`,
-            description: "A rocky body orbiting the Sun.",
-            visible: true
+            description: "A rocky body orbiting the Sun. Most asteroids are found in the asteroid belt between Mars and Jupiter.",
+            visible: true,
+            facts: ["Rocky composition", "Irregular shape", "No atmosphere", "Size varies greatly"]
         };
         
         asteroids.push(asteroid);
@@ -476,12 +554,13 @@ function createComets() {
         // Store comet orbital data
         comet.userData = {
             name: `Comet ${i + 1}`,
-            description: "An icy body that develops a tail when approaching the Sun.",
+            description: "An icy body that develops a tail when approaching the Sun. Made of dust, rock, and frozen gases like water, carbon dioxide, and methane.",
             distance: 100 + i * 20,
             eccentricity: 0.5 + Math.random() * 0.3, // Highly elliptical
             speed: 0.001,
             angle: Math.random() * Math.PI * 2,
-            visible: true
+            visible: true,
+            facts: ["Develop tails near Sun", "Made of ice and rock", "Highly elliptical orbits", "Some visible to naked eye"]
         };
         
         comets.push(comet);
@@ -624,7 +703,7 @@ function populateMenu() {
     for (let i = 0; i < 5; i++) {
         const item = createMenuItem({
             name: `Asteroid ${i + 1}`,
-            description: "A rocky body orbiting the Sun."
+            description: "A rocky body orbiting the Sun. Most asteroids are found in the asteroid belt between Mars and Jupiter."
         });
         othersList.appendChild(item);
     }
@@ -633,7 +712,7 @@ function populateMenu() {
     for (let i = 0; i < 5; i++) {
         const item = createMenuItem({
             name: `Comet ${i + 1}`,
-            description: "An icy body that develops a tail when approaching the Sun."
+            description: "An icy body that develops a tail when approaching the Sun. Made of dust, rock, and frozen gases."
         });
         othersList.appendChild(item);
     }
@@ -654,12 +733,12 @@ function createMenuItem(data) {
         showObjectInfo(data);
         focusOnObject(data.name);
         
-        // Auto-resume after 3 seconds (optional)
+        // Auto-resume after 5 seconds (increased from 3)
         setTimeout(() => {
             if (isPaused) {
                 resumeAnimation();
             }
-        }, 3000);
+        }, 5000);
     };
     
     return item;
@@ -713,7 +792,8 @@ function setupChecklist() {
             { name: 'Neptune', objects: planets.filter(p => p.userData.name === 'Neptune') },
             { name: 'Moon', objects: moons },
             { name: 'Pluto', objects: planets.filter(p => p.userData.name === 'Pluto') },
-            { name: 'Voyager 1', objects: spacecraft },
+            { name: 'Indian Spacecraft', objects: spacecraft.filter(s => s.userData.name.includes('Chandrayaan') || s.userData.name.includes('Mangalyaan') || s.userData.name.includes('Aditya') || s.userData.name.includes('PSLV')) },
+            { name: 'Other Spacecraft', objects: spacecraft.filter(s => !s.userData.name.includes('Chandrayaan') && !s.userData.name.includes('Mangalyaan') && !s.userData.name.includes('Aditya') && !s.userData.name.includes('PSLV')) },
             { name: 'Asteroids', objects: asteroids },
             { name: 'Comets', objects: comets }
         ];
@@ -910,12 +990,23 @@ window.hideInfo = function() {
     panel.classList.remove('visible');
 }
 
-// Show object information in info panel
+// Enhanced show object information in info panel
 window.showObjectInfo = function(obj) {
     const infoContent = document.getElementById('infoContent');
+    
+    let factsHtml = '';
+    if (obj.facts && obj.facts.length > 0) {
+        factsHtml = '<h4>Quick Facts:</h4><ul>';
+        obj.facts.forEach(fact => {
+            factsHtml += `<li>${fact}</li>`;
+        });
+        factsHtml += '</ul>';
+    }
+    
     infoContent.innerHTML = `
         <h3>${obj.name}</h3>
         <p>${obj.description}</p>
+        ${factsHtml}
     `;
     showInfo();
 }
@@ -1007,12 +1098,12 @@ function onMouseClick(event) {
             
             showObjectInfo(object.userData);
             
-            // Auto-resume after 3 seconds
+            // Auto-resume after 5 seconds (increased)
             setTimeout(() => {
                 if (isPaused) {
                     resumeAnimation();
                 }
-            }, 3000);
+            }, 5000);
         }
     }
 }
