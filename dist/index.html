@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Solar System Explorer</title>
-  <script type="module" crossorigin src="/assets/index-QTXMm44d.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-C_ljSd6B.css">
+    
+    <!-- Sun Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='35' fill='%23FFD700'/><circle cx='50' cy='50' r='25' fill='%23FFA500'/><circle cx='50' cy='50' r='15' fill='%23FF8C00'/></svg>">
+    
+  <script type="module" crossorigin src="/assets/index-Dv5ZJFdU.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-j6Z3LM02.css">
 </head>
 <body>
     <!-- Main 3D Container -->
     <div id="container"></div>
     
-    <!-- Header with Sun Icon and Title -->
-    <div class="header">
+    <!-- FIXED HEADER - FORCED POSITIONING -->
+    <div class="header fixed-header">
         <div class="sun-icon"></div>
         <h1>3D SOLAR SYSTEM EXPLORER</h1>
         <p class="subtitle">Explore our Solar System with Indian Space Missions</p>
     </div>
 
-    <!-- Top Left Compact Menu -->
-    <div class="top-menu">
+    <!-- FIXED TOP MENU -->
+    <div class="top-menu fixed-menu">
         <button class="menu-toggle compact" onclick="toggleMenu()">
             🪐 Solar System
         </button>
@@ -60,10 +64,10 @@
         </div>
     </div>
 
-    <!-- Bottom Left Enhanced Toolkit -->
-    <div class="toolkit">
+    <!-- FIXED TOOLKIT -->
+    <div class="toolkit fixed-toolkit">
         <button class="toolkit-toggle" onclick="toggleToolkit()">🛠️ Toolkit</button>
-        <div class="toolkit-content expanded" id="toolkitContent">
+        <div class="toolkit-content" id="toolkitContent">
             <div class="toolkit-header">
                 <h3>Control Panel</h3>
             </div>
@@ -87,7 +91,7 @@
         </div>
     </div>
 
-    <!-- Checklist Panel (Right of Toolkit) -->
+    <!-- Checklist Panel -->
     <div class="checklist-panel" id="checklistPanel">
         <div class="checklist-header">
             <h3>Visibility Controls</h3>
@@ -100,7 +104,7 @@
         </div>
     </div>
 
-    <!-- Enhanced Info Panel (Right Side) -->
+    <!-- Enhanced Info Panel with Reset Button -->
     <div class="info-panel" id="infoPanel">
         <button class="close-btn" onclick="hideInfo()">×</button>
         <div id="infoContent">

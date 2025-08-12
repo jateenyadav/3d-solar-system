@@ -13,6 +13,10 @@ let isPaused = false; // Animation pause state
 let animationId; // Store animation frame ID for cancellation
 let renderLoop; // Separate render loop for paused state
 
+// Store initial camera position for reset
+let initialCameraPosition = { x: 0, y: 20, z: 50 };
+let initialCameraTarget = { x: 0, y: 0, z: 0 };
+
 // Enhanced solar system data with more Indian spacecraft and detailed information
 const solarSystemData = {
     sun: {
@@ -250,8 +254,9 @@ function init() {
     createComets();        // Create comets
     createSpacecraft();    // Create spacecraft
 
-    // Position camera for good initial view
-    camera.position.set(0, 20, 50);
+    // Set and store initial camera position
+    camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
+    controls.target.set(initialCameraTarget.x, initialCameraTarget.y, initialCameraTarget.z);
 
     // Populate the categorized menu
     populateMenu();
@@ -269,13 +274,7 @@ function init() {
     // Start continuous render loop for camera controls
     startRenderLoop();
 
-    // Open toolkit by default
-    setTimeout(() => {
-        const toolkitContent = document.getElementById('toolkitContent');
-        if (toolkitContent) {
-            toolkitContent.classList.add('expanded');
-        }
-    }, 1000);
+    // TOOLKIT IS CLOSED BY DEFAULT
 }
 
 // Helper function to load texture with improved error handling
@@ -733,18 +732,14 @@ function createMenuItem(data) {
         showObjectInfo(data);
         focusOnObject(data.name);
         
-        // Auto-resume after 5 seconds (increased from 3)
-        setTimeout(() => {
-            if (isPaused) {
-                resumeAnimation();
-            }
-        }, 5000);
+        // Show the reset/home button in info panel
+        showResetButton();
     };
     
     return item;
 }
 
-// Focus camera on specific object
+// IMPROVED FOCUS FUNCTION - Better zoom and positioning
 function focusOnObject(objectName) {
     let targetObject = null;
     
@@ -757,20 +752,77 @@ function focusOnObject(objectName) {
             .find(obj => obj.userData.name === objectName);
     }
     
-    // Move camera to focus on object
+    // Move camera to focus on object with proper zoom
     if (targetObject) {
         const position = targetObject.position.clone();
-        const distance = Math.max(targetObject.userData.radius * 5 || 5, 10);
         
-        // Animate camera to object
+        // Calculate appropriate distance based on object size
+        let distance;
+        if (targetObject.userData.radius) {
+            // For objects with defined radius
+            distance = Math.max(targetObject.userData.radius * 8, 5);
+        } else {
+            // For smaller objects like asteroids/comets/spacecraft
+            distance = 3;
+        }
+        
+        // Special cases for very large objects
+        if (objectName === "Sun") {
+            distance = 25;
+        } else if (objectName === "Jupiter" || objectName === "Saturn") {
+            distance = 15;
+        }
+        
+        // Set camera target and position for optimal viewing
         controls.target.copy(position);
+        
+        // Position camera at an angle for better 3D view
+        const angle = Math.PI / 4; // 45 degrees
         camera.position.set(
-            position.x + distance,
-            position.y + distance,
-            position.z + distance
+            position.x + distance * Math.cos(angle),
+            position.y + distance * 0.5,
+            position.z + distance * Math.sin(angle)
         );
+        
+        // Update controls smoothly
         controls.update();
+        
+        console.log(`🎯 Focused on ${objectName} at distance ${distance}`);
     }
+}
+
+// Show reset button in info panel
+function showResetButton() {
+    const infoContent = document.getElementById('infoContent');
+    
+    // Check if reset button already exists
+    let resetBtn = document.getElementById('resetViewBtn');
+    if (!resetBtn) {
+        resetBtn = document.createElement('button');
+        resetBtn.id = 'resetViewBtn';
+        resetBtn.className = 'reset-btn';
+        resetBtn.innerHTML = '🏠 Back to Solar System View';
+        resetBtn.onclick = resetToInitialView;
+        
+        // Add to info panel
+        infoContent.appendChild(resetBtn);
+    }
+}
+
+// Reset camera to initial position and resume animation
+function resetToInitialView() {
+    // Resume animation
+    resumeAnimation();
+    
+    // Reset camera to initial position
+    camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
+    controls.target.set(initialCameraTarget.x, initialCameraTarget.y, initialCameraTarget.z);
+    controls.update();
+    
+    // Hide info panel
+    hideInfo();
+    
+    console.log("🏠 Reset to initial solar system view");
 }
 
 // Setup checklist with real-time visibility controls
@@ -988,6 +1040,12 @@ window.showInfo = function() {
 window.hideInfo = function() {
     const panel = document.getElementById('infoPanel');
     panel.classList.remove('visible');
+    
+    // Remove reset button if it exists
+    const resetBtn = document.getElementById('resetViewBtn');
+    if (resetBtn) {
+        resetBtn.remove();
+    }
 }
 
 // Enhanced show object information in info panel
@@ -1076,6 +1134,9 @@ window.toggleChecklist = function() {
 // Make pause function global for HTML access
 window.togglePause = togglePause;
 
+// Make reset function global for HTML access
+window.resetToInitialView = resetToInitialView;
+
 // Handle mouse clicks on 3D objects
 function onMouseClick(event) {
     // Calculate mouse position in normalized device coordinates
@@ -1097,13 +1158,7 @@ function onMouseClick(event) {
             pauseAnimation();
             
             showObjectInfo(object.userData);
-            
-            // Auto-resume after 5 seconds (increased)
-            setTimeout(() => {
-                if (isPaused) {
-                    resumeAnimation();
-                }
-            }, 5000);
+            showResetButton();
         }
     }
 }
