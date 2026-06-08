@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 
-// Base path is set so assets resolve correctly when served from
-// https://<user>.github.io/3d-solar-system/ on GitHub Pages.
+// Relative base so the built assets resolve correctly regardless of where
+// the site is served from: root on Netlify (/) or a subpath on GitHub Pages
+// (/3d-solar-system/). Using './' keeps every emitted URL relative.
 export default defineConfig({
-  base: '/3d-solar-system/',
+  base: './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
