@@ -13,6 +13,14 @@
 <body>
     <!-- Main 3D Container -->
     <div id="container"></div>
+
+    <!-- FPS / Stats overlay -->
+    <div class="stats-overlay" id="statsOverlay">
+        <span class="stat-pill">FPS: <strong id="fpsValue">—</strong></span>
+        <span class="stat-pill hints" title="Keyboard shortcuts">
+            Space pause · O orbits · L labels · R reset · F fullscreen · ± zoom
+        </span>
+    </div>
     
     <!-- FIXED HEADER - FORCED POSITIONING -->
     <div class="header fixed-header">
@@ -75,8 +83,22 @@
                 <button class="toolkit-btn info" onclick="showInfo()">ℹ️ Info</button>
                 <button class="toolkit-btn zoom" onclick="zoomIn()">🔍+ Zoom In</button>
                 <button class="toolkit-btn zoom" onclick="zoomOut()">🔍- Zoom Out</button>
+                <button class="toolkit-btn reset" onclick="resetView()">🏠 Reset View</button>
                 <button class="toolkit-btn fullscreen" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+                <button class="toolkit-btn orbits" onclick="toggleOrbits()">🛰️ Orbits</button>
+                <button class="toolkit-btn labels" onclick="toggleLabels()">🏷️ Labels</button>
                 <button class="toolkit-btn checklist" onclick="toggleChecklist()">📋 Visibility</button>
+            </div>
+
+            <!-- Search -->
+            <div class="toolkit-search">
+                <input type="text" id="searchInput" placeholder="🔎 Search planet, moon, spacecraft…" autocomplete="off" />
+            </div>
+
+            <!-- Speed control -->
+            <div class="toolkit-slider">
+                <label for="speedSlider">Time Speed: <span id="speedValue">1.0x</span></label>
+                <input type="range" id="speedSlider" min="0" max="5" step="0.1" value="1" />
             </div>
             <div class="toolkit-info">
                 <p><strong>🇮🇳 Featuring Indian Space Missions:</strong></p>
